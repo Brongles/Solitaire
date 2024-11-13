@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 public class Card extends JPanel{
 		// Members
 		public int value;
+		public int gameValue;
 		public Suit suit;
 		private BufferedImage image;
 		private BufferedImage backImage;
@@ -71,12 +72,19 @@ public class Card extends JPanel{
 			
 			return Integer.parseInt(value);
 		}
+		
+		public void setAceGameValue(int val) {
+			if (valueString(value) == "A") {
+				gameValue = val;
+			}
+		}
+		
 		/**
 		 * toString method, eg: "K of Diamonds"
 		 * @return {String} Description of the current card
 		 */
 		public String toString() {
-			return valueString(value) + " of " + suit.name().toLowerCase();
+			return valueString(value) + " of " + suit.name();
 		}
 		
 		/**
@@ -97,12 +105,17 @@ public class Card extends JPanel{
 			this.suit = suit;		
 			isReversed = false;
 			
+			if (value >= 11) {
+				gameValue = 10;
+			}
+			
 			try {
 				// Load the image for the current file
-				URL url = getClass().getResource(this.toString() +".png");
+				URL url = getClass().getResource("../solitaire/images/cards/" + this.toString() +".png");
+				//System.out.println(this.getClass().getResource(""));
 				image = ImageIO.read(url);
 				//System.out.println(url);
-				URL urlback = getClass().getResource("back.png"); 
+				URL urlback = getClass().getResource("../solitaire/images/cards/back.png"); 
 				backImage = ImageIO.read(urlback);
 				
 				setBounds(0, 0, image.getWidth(), image.getHeight());
